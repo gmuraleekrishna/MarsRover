@@ -83,6 +83,12 @@ def to_polar_coords(xpix, ypix):
 
 
 # Apply the above functions in succession
+def calc_forward_dist(path_dists, path_angles):
+	abs_angles = np.absolute(path_angles / sum(path_angles))
+	idx = np.abs(abs_angles).argmin()
+	return path_dists[idx]
+
+
 def perception_step(Rover):
 	# Perform perception steps to update Rover()
 	# TODO:
@@ -121,6 +127,9 @@ def perception_step(Rover):
 	rock_x_world, rock_y_world = pix_to_world(rock_dist, rock_angles, Rover.pos[0], Rover.pos[1], Rover.yaw)
 	obstacle_x_world, obstacle_y_world = pix_to_world(obs_dist, obs_dist, Rover.pos[0], Rover.pos[1], Rover.yaw)
 
+	if len(path_angles) > 0:
+		Rover.dist_to_obstacle = calc_forward_dist(path_dists, path_angles)
+
 	if (Rover.pitch < 1 or Rover.pitch > 359) and (Rover.roll < 1 or Rover.roll > 359):
 		Rover.worldmap[obstacle_y_world, obstacle_x_world, 0] = 255
 		Rover.worldmap[rock_y_world, rock_x_world, 1] = 255
@@ -136,5 +145,7 @@ def perception_step(Rover):
 
 	Rover.samples_dists = rock_dist
 	Rover.samples_angles = rock_angles
+
+	Rover.nav_area = path_thres_img.sum()
 
 	return Rover
