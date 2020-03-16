@@ -16,9 +16,9 @@ def perspect_transform(img):
 	# this is just a rough guess, feel free to change it!
 	bottom_offset = 6
 	src = np.float32([[14, 140], [301, 140], [200, 96], [118, 96]])
-	dst = np.float32([[img_size[0] / 2 - dst_size, img_size[1] - bottom_offset], \
-	                  [img_size[0] / 2 + dst_size, img_size[1] - bottom_offset], \
-	                  [img_size[0] / 2 + dst_size, img_size[1] - 2 * dst_size - bottom_offset], \
+	dst = np.float32([[img_size[0] / 2 - dst_size, img_size[1] - bottom_offset],
+	                  [img_size[0] / 2 + dst_size, img_size[1] - bottom_offset],
+	                  [img_size[0] / 2 + dst_size, img_size[1] - 2 * dst_size - bottom_offset],
 	                  [img_size[0] / 2 - dst_size, img_size[1] - 2 * dst_size - bottom_offset],
 	                  ])
 
@@ -54,7 +54,7 @@ def rover_coords(binary_img, limit=80):
 	ypos, xpos = binary_img.nonzero()
 	# Calculate pixel positions with reference to the rover position being at the
 	# center bottom of the image.
-	y_pixel = -(xpos - binary_img.shape[1]/2 ).astype(np.float)
+	y_pixel = -(xpos - binary_img.shape[1] / 2).astype(np.float)
 	x_pixel = -(ypos - binary_img.shape[0]).astype(np.float)
 	dist = np.sqrt(x_pixel ** 2 + y_pixel ** 2)
 	x_pixel, y_pixel = x_pixel[dist < limit], y_pixel[dist < limit]
@@ -92,7 +92,6 @@ def calc_forward_dist(path_dists, path_angles):
 def perception_step(Rover):
 	# Perform perception steps to update Rover()
 	# TODO:
-
 
 	# 5) Convert map image pixel values to rover-centric coords
 	# 6) Convert rover-centric pixel values to world coordinates
